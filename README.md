@@ -28,7 +28,11 @@ cd gowt
 go mod download
 ```
 
-3. Create database on MySQL
+3. MYSQL Setup 
+```
+# run mysql
+docker run --rm -p 3306:3306 -e MYSQL_ROOT_PASSWORD=root -d mysql:latest
+```
 
 ```
 CREATE DATABASE gowtdb CHARACTER SET utf8 COLLATE utf8_unicode_ci;
@@ -50,8 +54,8 @@ CREATE TABLE tools (
 
 ```
 DATABASE_NAME="gowtdb"
-DATABASE_USERNAME="user"
-DATABASE_PASSWORD="pass"
+DATABASE_USERNAME="root"
+DATABASE_PASSWORD="root"
 DATABASE_SERVER="localhost"
 DATABASE_PORT="3306"
 ```
