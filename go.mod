@@ -1,4 +1,4 @@
-module github.com/le4ndro/gowt
+module github.com/gtamang001/go-crud
 
 go 1.16
 
