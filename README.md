@@ -18,8 +18,8 @@ What things you need to install the software
 1. Clone this repository
 
 ```
-git clone https://github.com/le4ndro/gowt.git
-cd gowt
+git clone https://github.com/gtamang001/go-crud.git
+cd go-crud
 ```
 
 2. Run below command and install dependencies
@@ -57,13 +57,16 @@ DATABASE_NAME="gowtdb"
 DATABASE_USERNAME="root"
 DATABASE_PASSWORD="root"
 DATABASE_SERVER="localhost"
-DATABASE_PORT="3306"
+DATABASE_PORT="3306"docker run --rm -p 3306:3306 -e MYSQL_ROOT_PASSWORD=root -d mysql:latest
 ```
 
 6. Run the application
 
 ```
+# using make 
 make run
+# using plain main.go
+go run main.go 
 ```
 
 ## Deployment
