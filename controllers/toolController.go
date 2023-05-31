@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 	"text/template"
@@ -148,15 +149,70 @@ func Update(w http.ResponseWriter, r *http.Request) {
 	http.Redirect(w, r, "/", 301)
 }
 
+// func Delete(w http.ResponseWriter, r *http.Request) {
+// 	db := initializers.DbConn()
+// 	tool := r.URL.Query().Get("id")
+// 	fmt.Println("printing the value of tool as: ", tool)
+// 	delForm, err := db.Prepare("DELETE FROM tools WHERE id=?")
+// 	if err != nil {
+// 		panic(err.Error())
+// 	}
+// 	delForm.Exec(tool)
+// 	log.Println("DELETE " + tool)
+// 	defer db.Close()
+// 	http.Redirect(w, r, "/", 301)
+// }
+
+// added methods for delete
 func Delete(w http.ResponseWriter, r *http.Request) {
+	// Retrieve the item ID from the request, assuming it's passed in the query string
+	fmt.Println("Calling Delete hangle")
 	db := initializers.DbConn()
-	tool := r.URL.Query().Get("id")
-	delForm, err := db.Prepare("DELETE FROM tools WHERE id=?")
+	nId := r.URL.Query().Get("id")
+	selDB, err := db.Query("SELECT * FROM tools WHERE id=?", nId)
+	fmt.Println("NID value is ", nId)
 	if err != nil {
 		panic(err.Error())
 	}
-	delForm.Exec(tool)
-	log.Println("DELETE " + tool)
-	defer db.Close()
-	http.Redirect(w, r, "/", 301)
+
+	tool := models.Tool{}
+
+	for selDB.Next() {
+		var id, rating int
+		var name, category, url, notes string
+		err := selDB.Scan(&id, &name, &category, &url, &rating, &notes)
+		if err != nil {
+			panic(err.Error())
+		}
+
+		tool.Id = id
+		tool.Name = name
+		tool.Category = category
+		tool.URL = url
+		tool.Rating = rating
+		tool.Notes = notes
+	}
+
+	tmpl.ExecuteTemplate(w, "Delete", tool)
+
+}
+
+func Confirm(w http.ResponseWriter, r *http.Request) {
+	// Handle the delete confirmation form submission here
+	if r.Method == http.MethodPost {
+		// Retrieve the item ID from the form data
+		itemID := r.FormValue("id")
+
+		// Perform the delete operation or further processing based on the item ID
+		fmt.Printf("Deleting item with ID: %s\n", itemID)
+		db := initializers.DbConn()
+		delForm, err := db.Prepare("DELETE FROM tools WHERE id=?")
+		if err != nil {
+			panic(err.Error())
+		}
+		delForm.Exec(itemID)
+		log.Println("DELETE " + itemID)
+		defer db.Close()
+		http.Redirect(w, r, "/", 301)
+	}
 }

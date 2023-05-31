@@ -1,0 +1,36 @@
+{{ define "Delete" }}
+{{ template "Header" }}
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Delete Tool</title>
+  <script>
+    function confirmDelete() {
+      var result = confirm("Are you sure you want to delete this item?");
+      if (result) {
+        // Proceed with the delete operation
+        document.getElementById("deleteForm").submit();
+      } else {
+        // Cancel or do nothing
+        window.location.href = "/";
+      }
+    }
+  </script>
+</head>
+
+<body>
+  <h1>Delete Tool</h1>
+  <p>Are you sure you want to delete "{{ .Id }}"?</p>
+
+  <form id="deleteForm" action="/confirm" method="POST">
+    <input type="hidden" name="id" value="{{ .Id }}">
+    <input type="button" class="btn btn-danger" value="Delete" onclick="confirmDelete()">
+    <button type="button" class="btn btn-primary" onclick="window.location.href = '/';">Cancel</button>
+  </form>
+
+</body>
+
+</html>
+{{ template "Footer" }}
+{{ end }}

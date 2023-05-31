@@ -21,5 +21,6 @@ func main() {
 	http.HandleFunc("/insert", controllers.Insert)
 	http.HandleFunc("/update", controllers.Update)
 	http.HandleFunc("/delete", controllers.Delete)
+	http.HandleFunc("/confirm", controllers.Confirm)
 	http.ListenAndServe(":8080", nil)
 }
